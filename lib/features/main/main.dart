@@ -3,3 +3,8 @@ export 'tabs/home_tab.dart';
 export 'tabs/orders_tab.dart';
 export 'tabs/cart_tab.dart';
 export 'tabs/profile_tab.dart';
+export 'tabs/users_tab.dart';
+export 'tabs/clients_tab.dart';
+export 'tabs/products_tab.dart';
+export 'tabs/administrators_tab.dart';
+export 'tabs/design_system_tab.dart';

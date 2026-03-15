@@ -12,6 +12,8 @@ import 'package:adm_panel_v2/services/panel/panel_example.dart';
 
 import '../features/auth/sms_auth/phone_input/phone_input.dart';
 import '../features/auth/sms_auth/sms_code/sms_code.dart';
+import '../features/admin/dashboard/dashboard.dart';
+import '../features/admin/layout/admin_layout.dart';
 
 class AppRouter {
   static const String splash = '/';
@@ -47,6 +49,14 @@ class AppRouter {
   static const String floatingPanelTable = '/floating-panel/table';
   static const String floatingPanelList = '/floating-panel/list';
   static const String panelServiceExample = '/panel-service/example';
+
+  // Admin Panel Routes
+  static const String adminDashboard = '/admin/dashboard';
+  static const String adminProducts = '/admin/products';
+  static const String adminCategories = '/admin/categories';
+  static const String adminOrders = '/admin/orders';
+  static const String adminUsers = '/admin/users';
+  static const String adminSettings = '/admin/settings';
 
   // NavigatorKey для NavigationService
   static final GlobalKey<NavigatorState> navigatorKey =
@@ -150,6 +160,59 @@ class AppRouter {
         name: 'panelServiceExample',
         builder: (context, state) => const PanelServiceExample(),
       ),
+
+      // Admin Panel Routes
+      GoRoute(
+        path: adminDashboard,
+        name: 'adminDashboard',
+        builder: (context, state) => const DashboardView(),
+      ),
+      // Placeholder routes for other admin pages
+      GoRoute(
+        path: adminProducts,
+        name: 'adminProducts',
+        builder: (context, state) => const _PlaceholderView(title: 'Товары'),
+      ),
+      GoRoute(
+        path: adminCategories,
+        name: 'adminCategories',
+        builder: (context, state) => const _PlaceholderView(title: 'Категории'),
+      ),
+      GoRoute(
+        path: adminOrders,
+        name: 'adminOrders',
+        builder: (context, state) => const _PlaceholderView(title: 'Заказы'),
+      ),
+      GoRoute(
+        path: adminUsers,
+        name: 'adminUsers',
+        builder: (context, state) => const _PlaceholderView(title: 'Пользователи'),
+      ),
+      GoRoute(
+        path: adminSettings,
+        name: 'adminSettings',
+        builder: (context, state) => const _PlaceholderView(title: 'Настройки'),
+      ),
     ],
   );
+}
+
+// Placeholder для будущих страниц
+class _PlaceholderView extends StatelessWidget {
+  final String title;
+
+  const _PlaceholderView({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return AdminLayout(
+      title: title,
+      child: Center(
+        child: Text(
+          'Страница "$title" в разработке',
+          style: const TextStyle(fontSize: 18),
+        ),
+      ),
+    );
+  }
 }

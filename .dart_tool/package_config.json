@@ -86,6 +86,12 @@
       "languageVersion": "3.1"
     },
     {
+      "name": "fl_chart",
+      "rootUri": "file:///Users/azapsh/.pub-cache/hosted/pub.dev/fl_chart-0.66.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
       "name": "flutter",
       "rootUri": "file:///Users/azapsh/development/flutter/packages/flutter",
       "packageUri": "lib/",
@@ -270,6 +276,18 @@
       "rootUri": "file:///Users/azapsh/.pub-cache/hosted/pub.dev/mime-2.0.0",
       "packageUri": "lib/",
       "languageVersion": "3.2"
+    },
+    {
+      "name": "mix",
+      "rootUri": "file:///Users/azapsh/.pub-cache/hosted/pub.dev/mix-1.7.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.6"
+    },
+    {
+      "name": "mix_annotations",
+      "rootUri": "file:///Users/azapsh/.pub-cache/hosted/pub.dev/mix_annotations-1.7.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.6"
     },
     {
       "name": "nested",
@@ -500,7 +518,7 @@
       "languageVersion": "3.6"
     }
   ],
-  "generated": "2026-01-11T08:21:33.893352Z",
+  "generated": "2026-03-01T14:48:34.002467Z",
   "generator": "pub",
   "generatorVersion": "3.6.1",
   "flutterRoot": "file:///Users/azapsh/development/flutter",

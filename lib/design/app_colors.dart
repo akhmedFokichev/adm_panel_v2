@@ -4,9 +4,9 @@ class AppColors {
   AppColors._();
 
   // Primary Colors (Golden Orange / Marigold)
-  static const Color primary = Color(0xFFFF8C00); // Deep golden yellow / marigold orange
-  static const Color primaryDark = Color(0xFFCC7000); // Darker shade
-  static const Color primaryLight = Color(0xFFFFB84D); // Lighter shade
+  static const Color primary = Color(0xFF4577D4); // Deep golden yellow / marigold orange
+  static const Color primaryDark = Color(0xFF4577D4); // Darker shade
+  static const Color primaryLight = Color(0xFF4577D4); // Lighter shade
 
   // Secondary Colors
   static const Color secondary = Color(0xFF03DAC6);

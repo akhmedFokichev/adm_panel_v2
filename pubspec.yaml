@@ -60,6 +60,12 @@ dependencies:
   # Draggable Bottom Sheet (аналог FloatingPanel)
   sliding_up_panel: ^2.0.0+1
 
+  # Charts for Dashboard
+  fl_chart: ^0.66.0
+
+  # Styling System
+  mix: ^1.7.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
