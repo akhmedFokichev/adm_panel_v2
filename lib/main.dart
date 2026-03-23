@@ -5,13 +5,15 @@ import 'package:adm_panel_v2/core/di/injection_container.dart';
 import 'package:adm_panel_v2/features/splash/splash_page.dart';
 import 'package:adm_panel_v2/design/app_colors.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   // Инициализируем зависимости
-  InjectionContainer().init();
-  
+  await InjectionContainer().init();
+
   // Устанавливаем глобальный наблюдатель за BLoC событиями
   Bloc.observer = AppBlocObserver();
-  
+
   runApp(const MyApp());
 }
 

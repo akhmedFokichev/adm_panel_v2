@@ -1,11 +1,19 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:adm_panel_v2/core/di/injection_container.dart';
+import 'package:adm_panel_v2/core/storage/app_storage_service.dart';
+import 'package:adm_panel_v2/features/user/services/user_service.dart';
 import 'package:adm_panel_v2/features/splash/bloc/splash_event.dart';
 import 'package:adm_panel_v2/features/splash/bloc/splash_state.dart';
 
 /// BLoC для управления экраном загрузки
 class SplashBloc extends Bloc<SplashEvent, SplashState> {
+  late final AppStorageService _storageService;
+  late final UserService _userService;
+
   SplashBloc() : super(const SplashInitial()) {
+    _storageService = InjectionContainer().storageService;
+    _userService = InjectionContainer().userService;
     on<SplashStarted>(_onStarted);
     on<SplashCompleted>(_onCompleted);
   }
@@ -16,26 +24,45 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
   ) async {
     emit(const SplashLoading());
 
-    // Имитация загрузки данных
-    // В реальном приложении здесь может быть:
-    // - Проверка авторизации
-    // - Загрузка конфигурации
-    // - Инициализация сервисов
-    // - Проверка обновлений
-
-    for (int i = 0; i <= 100; i += 10) {
+    for (int i = 0; i <= 70; i += 10) {
       await Future.delayed(const Duration(milliseconds: 200));
       emit(SplashLoading(progress: i / 100));
     }
 
-    // После завершения загрузки переходим в загруженное состояние
-    emit(const SplashLoaded());
+    try {
+      final token = _storageService.getAuthToken();
+      if (token == null || token.isEmpty) {
+        emit(const SplashLoaded(isAuthenticated: false));
+        return;
+      }
+
+      InjectionContainer().updateAuthToken(token);
+      emit(const SplashLoading(progress: 0.85));
+
+      final meResponse = await _userService.me();
+      emit(const SplashLoading(progress: 1.0));
+
+      if (meResponse.success &&
+          meResponse.data != null &&
+          meResponse.data!.authorized) {
+        emit(const SplashLoaded(isAuthenticated: true));
+        return;
+      }
+
+      await _storageService.clearAuthData();
+      InjectionContainer().updateAuthToken(null);
+      emit(const SplashLoaded(isAuthenticated: false));
+    } catch (_) {
+      await _storageService.clearAuthData();
+      InjectionContainer().updateAuthToken(null);
+      emit(const SplashLoaded(isAuthenticated: false));
+    }
   }
 
   void _onCompleted(
     SplashCompleted event,
     Emitter<SplashState> emit,
   ) {
-    emit(const SplashLoaded());
+    emit(const SplashLoaded(isAuthenticated: false));
   }
 }

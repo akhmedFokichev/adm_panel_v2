@@ -1,13 +1,22 @@
 import 'package:dio/dio.dart';
 import 'package:adm_panel_v2/core/network/api_client.dart';
 import 'package:adm_panel_v2/core/network/api_response.dart';
-import 'package:adm_panel_v2/core/network/api_exception.dart';
 
 /// Базовый сервис для работы с API
 abstract class ApiService {
   final ApiClient apiClient;
 
   ApiService(this.apiClient);
+
+  String _resolveDioMessage(DioException e) {
+    if (e.error != null) {
+      return e.error.toString();
+    }
+    if (e.message != null && e.message!.isNotEmpty) {
+      return e.message!;
+    }
+    return 'Ошибка сети';
+  }
 
   /// Обработка GET запроса
   Future<ApiResponse<T>> get<T>(
@@ -22,7 +31,8 @@ abstract class ApiService {
       );
 
       if (response.statusCode == 200) {
-        final data = fromJson != null ? fromJson(response.data) : response.data as T;
+        final data =
+            fromJson != null ? fromJson(response.data) : response.data as T;
         return ApiResponse.success(data, response.statusCode);
       } else {
         return ApiResponse.error(
@@ -32,7 +42,7 @@ abstract class ApiService {
       }
     } on DioException catch (e) {
       return ApiResponse.error(
-        e.error?.toString() ?? 'Ошибка сети',
+        _resolveDioMessage(e),
         e.response?.statusCode,
       );
     } catch (e) {
@@ -54,8 +64,11 @@ abstract class ApiService {
         queryParameters: queryParameters,
       );
 
-      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
-        final responseData = fromJson != null ? fromJson(response.data) : response.data as T;
+      if (response.statusCode != null &&
+          response.statusCode! >= 200 &&
+          response.statusCode! < 300) {
+        final responseData =
+            fromJson != null ? fromJson(response.data) : response.data as T;
         return ApiResponse.success(responseData, response.statusCode);
       } else {
         return ApiResponse.error(
@@ -65,7 +78,7 @@ abstract class ApiService {
       }
     } on DioException catch (e) {
       return ApiResponse.error(
-        e.error?.toString() ?? 'Ошибка сети',
+        _resolveDioMessage(e),
         e.response?.statusCode,
       );
     } catch (e) {
@@ -87,8 +100,11 @@ abstract class ApiService {
         queryParameters: queryParameters,
       );
 
-      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
-        final responseData = fromJson != null ? fromJson(response.data) : response.data as T;
+      if (response.statusCode != null &&
+          response.statusCode! >= 200 &&
+          response.statusCode! < 300) {
+        final responseData =
+            fromJson != null ? fromJson(response.data) : response.data as T;
         return ApiResponse.success(responseData, response.statusCode);
       } else {
         return ApiResponse.error(
@@ -98,7 +114,7 @@ abstract class ApiService {
       }
     } on DioException catch (e) {
       return ApiResponse.error(
-        e.error?.toString() ?? 'Ошибка сети',
+        _resolveDioMessage(e),
         e.response?.statusCode,
       );
     } catch (e) {
@@ -119,7 +135,9 @@ abstract class ApiService {
         queryParameters: queryParameters,
       );
 
-      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+      if (response.statusCode != null &&
+          response.statusCode! >= 200 &&
+          response.statusCode! < 300) {
         return ApiResponse.success(null as T, response.statusCode);
       } else {
         return ApiResponse.error(
@@ -129,7 +147,7 @@ abstract class ApiService {
       }
     } on DioException catch (e) {
       return ApiResponse.error(
-        e.error?.toString() ?? 'Ошибка сети',
+        _resolveDioMessage(e),
         e.response?.statusCode,
       );
     } catch (e) {

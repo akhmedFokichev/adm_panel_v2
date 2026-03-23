@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mix/mix.dart';
 import 'package:adm_panel_v2/features/auth/bloc/auth_bloc.dart';
-import 'package:adm_panel_v2/features/auth/bloc/auth_event.dart';
 import 'package:adm_panel_v2/features/auth/bloc/auth_state.dart';
 import 'package:adm_panel_v2/design/mix_styles.dart';
 import 'package:adm_panel_v2/design/app_colors.dart';

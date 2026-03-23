@@ -41,7 +41,8 @@ class ErrorInterceptor extends Interceptor {
         break;
       case DioExceptionType.unknown:
         err = err.copyWith(
-          error: 'Ошибка подключения. Проверьте интернет',
+          error:
+              'Сетевой запрос заблокирован или не выполнен. Для Web это часто CORS/SSL/доступность API.',
         );
         break;
       default:

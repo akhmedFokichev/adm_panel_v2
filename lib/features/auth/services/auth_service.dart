@@ -19,17 +19,8 @@ class AuthService extends ApiService {
 
   /// Выход из системы
   Future<ApiResponse<void>> logout() async {
-    return post<void>(
-      ApiConfig.logout,
-    );
-  }
-
-  /// Обновление токена
-  Future<ApiResponse<AuthResponse>> refreshToken(String refreshToken) async {
-    return post<AuthResponse>(
-      ApiConfig.refreshToken,
-      data: {'refreshToken': refreshToken},
-      fromJson: (json) => AuthResponse.fromJson(json as Map<String, dynamic>),
-    );
+    // В текущем API отдельного endpoint для logout нет.
+    // Выход делаем локально через очистку токена/сессии.
+    return ApiResponse.success(null);
   }
 }

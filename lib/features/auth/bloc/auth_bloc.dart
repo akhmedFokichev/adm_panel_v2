@@ -5,13 +5,16 @@ import 'package:adm_panel_v2/features/auth/bloc/auth_state.dart';
 import 'package:adm_panel_v2/features/auth/services/auth_service.dart';
 import 'package:adm_panel_v2/features/auth/models/auth_request.dart';
 import 'package:adm_panel_v2/core/di/injection_container.dart';
+import 'package:adm_panel_v2/core/storage/app_storage_service.dart';
 
 /// BLoC для управления авторизацией
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthService _authService;
+  final AppStorageService _storageService;
 
   AuthBloc({AuthService? authService})
       : _authService = authService ?? InjectionContainer().authService,
+        _storageService = InjectionContainer().storageService,
         super(const AuthInitial()) {
     on<AuthLoginRequested>(_onLoginRequested);
     on<AuthLogoutRequested>(_onLogoutRequested);
@@ -41,12 +44,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       if (response.success && response.data != null) {
         final authData = response.data!;
-        
+        final token = authData.accessToken;
+        if (token.isEmpty) {
+          emit(const AuthError('Сервер не вернул accessToken'));
+          return;
+        }
+
+        await _storageService.saveAuthToken(token);
+        await _storageService.saveUserId(authData.user.id);
+        await _storageService.saveUserName(
+          authData.user.name ?? authData.user.email,
+        );
+
         // Обновляем токен в API клиенте
-        InjectionContainer().updateAuthToken(authData.token);
+        InjectionContainer().updateAuthToken(token);
 
         emit(AuthAuthenticated(
-          token: authData.token,
+          token: token,
           userId: authData.user.id,
           username: authData.user.name ?? authData.user.email,
         ));
@@ -68,21 +82,31 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       
       // Очищаем токен
       InjectionContainer().updateAuthToken(null);
-      
+      await _storageService.clearAuthData();
+
       emit(const AuthUnauthenticated());
     } catch (e) {
       // Даже если запрос не удался, выходим из системы локально
       InjectionContainer().updateAuthToken(null);
+      await _storageService.clearAuthData();
       emit(const AuthUnauthenticated());
     }
   }
 
-  void _onStatusChecked(
+  Future<void> _onStatusChecked(
     AuthStatusChecked event,
     Emitter<AuthState> emit,
-  ) {
-    // В реальном приложении здесь будет проверка токена из хранилища
-    // Пока возвращаем неавторизованное состояние
+  ) async {
+    final token = _storageService.getAuthToken();
+    final userId = _storageService.getUserId();
+    final userName = _storageService.getUserName();
+
+    if (token != null && token.isNotEmpty && userId != null && userName != null) {
+      InjectionContainer().updateAuthToken(token);
+      emit(AuthAuthenticated(token: token, userId: userId, username: userName));
+      return;
+    }
+
     emit(const AuthUnauthenticated());
   }
 }

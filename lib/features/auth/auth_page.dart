@@ -4,7 +4,7 @@ import 'package:adm_panel_v2/features/auth/bloc/auth_bloc.dart';
 import 'package:adm_panel_v2/features/auth/bloc/auth_event.dart';
 import 'package:adm_panel_v2/features/auth/bloc/auth_state.dart';
 import 'package:adm_panel_v2/features/auth/widgets/auth_widgets.dart';
-import 'package:adm_panel_v2/features/counter/counter_page.dart';
+import 'package:adm_panel_v2/features/admin/admin_layout.dart';
 import 'package:adm_panel_v2/design/app_colors.dart';
 
 /// Экран авторизации
@@ -48,7 +48,7 @@ class _AuthPageState extends State<AuthPage> {
           if (state is AuthAuthenticated) {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                builder: (context) => const CounterPage(),
+                builder: (context) => const AdminLayout(),
               ),
             );
           } else if (state is AuthError) {

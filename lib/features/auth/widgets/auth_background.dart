@@ -18,8 +18,8 @@ class AuthBackground extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.primary,
-            AppColors.primaryDark,
+            AppColors.background,
+            AppColors.background,
           ],
         ),
       ),

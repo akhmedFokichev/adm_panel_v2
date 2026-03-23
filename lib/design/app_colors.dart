@@ -10,15 +10,21 @@ class AppColors {
 
   // Background Colors
   static const Color background = Color(0xFFFFFFFF);
+  static const Color backgroundAdmin = Color(0xFFE9ECEF);
   static const Color surface = Color(0xFFFFFFFF);
   static const Color surfaceVariant = Color(0xFFF5F5F5);
   static const Color surfaceDark = Color(0xFF121212);
+  static const Color sidebarBackground = Color(0xFF2F3136);
+  static const Color sidebarItemActive = Color(0xFF3E78AF);
+  static const Color sidebarDivider = Color(0xFF3A3D42);
 
   // Text Colors
   static const Color textPrimary = Color(0xFF000000);
+  static const Color textPrimaryMuted = Color(0xFF4F4F4F);
   static const Color textSecondary = Color(0xFF757575);
   static const Color textTertiary = Color(0xFF9E9E9E);
   static const Color textOnPrimary = Color(0xFFFFFFFF);
+  static const Color transparent = Colors.transparent;
 
   // Status Colors
   static const Color error = Color(0xFFB00020);

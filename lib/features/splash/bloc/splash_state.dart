@@ -25,7 +25,12 @@ class SplashLoading extends SplashState {
 
 /// Состояние завершения загрузки
 class SplashLoaded extends SplashState {
-  const SplashLoaded();
+  final bool isAuthenticated;
+
+  const SplashLoaded({required this.isAuthenticated});
+
+  @override
+  List<Object> get props => [isAuthenticated];
 }
 
 /// Состояние ошибки

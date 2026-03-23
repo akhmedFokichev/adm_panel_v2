@@ -5,7 +5,7 @@ import 'package:adm_panel_v2/features/splash/bloc/splash_bloc.dart';
 import 'package:adm_panel_v2/features/splash/bloc/splash_event.dart';
 import 'package:adm_panel_v2/features/splash/bloc/splash_state.dart';
 import 'package:adm_panel_v2/features/auth/auth_page.dart';
-import 'package:adm_panel_v2/design/mix_styles.dart';
+import 'package:adm_panel_v2/features/admin/admin_layout.dart';
 import 'package:adm_panel_v2/design/app_colors.dart';
 
 /// Экран загрузки приложения
@@ -19,11 +19,13 @@ class SplashPage extends StatelessWidget {
       child: Scaffold(
         body: BlocListener<SplashBloc, SplashState>(
           listener: (context, state) {
-            // Переход на экран авторизации после загрузки
+            // Если токен валиден (проверка /me), пропускаем авторизацию.
             if (state is SplashLoaded) {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => const AuthPage(),
+                  builder: (context) => state.isAuthenticated
+                      ? const AdminLayout()
+                      : const AuthPage(),
                 ),
               );
             }
