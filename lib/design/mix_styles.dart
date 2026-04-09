@@ -35,6 +35,35 @@ class MixStyles {
         $text.style.fontSize(14),
       );
 
+  /// Компактные кнопки (диалоги, плотные тулбары)
+  static Style get primaryButtonCompact => Style(
+        $box.padding(10, 16),
+        $box.borderRadius(8),
+        $box.color(AppColors.primary),
+        $text.style.color(AppColors.textOnPrimary),
+        $text.style.fontWeight(FontWeight.w600),
+        $text.style.fontSize(14),
+      );
+
+  static Style get outlinedButtonCompact => Style(
+        $box.padding(10, 16),
+        $box.borderRadius(8),
+        $box.border(
+          color: AppColors.primary,
+          width: 1.5,
+        ),
+        $text.style.color(AppColors.primary),
+        $text.style.fontWeight(FontWeight.w600),
+        $text.style.fontSize(14),
+      );
+
+  static Style get textButtonCompact => Style(
+        $box.padding(8, 10),
+        $text.style.color(AppColors.primary),
+        $text.style.fontWeight(FontWeight.w500),
+        $text.style.fontSize(14),
+      );
+
   // Карточки
   static Style get card => Style(
         $box.padding(20),
@@ -62,31 +91,6 @@ class MixStyles {
         ),
       );
 
-  // Инпуты
-  static Style get input => Style(
-        $box.padding(16),
-        $box.borderRadius(12),
-        $box.color(AppColors.surface),
-        $box.border(
-          color: AppColors.border,
-          width: 1,
-        ),
-        $text.style.color(AppColors.textPrimary),
-        $text.style.fontSize(14),
-      );
-
-  static Style get inputFocused => Style(
-        $box.padding(16),
-        $box.borderRadius(12),
-        $box.color(AppColors.surface),
-        $box.border(
-          color: AppColors.primary,
-          width: 2,
-        ),
-        $text.style.color(AppColors.textPrimary),
-        $text.style.fontSize(14),
-      );
-
   // Текст
   static Style get headingLarge => Style(
         $text.style.color(AppColors.textPrimary),
@@ -108,51 +112,5 @@ class MixStyles {
   static Style get bodyTextSecondary => Style(
         $text.style.color(AppColors.textSecondary),
         $text.style.fontSize(14),
-      );
-
-  // Бейджи/Теги
-  static Style get badge => Style(
-        $box.padding.horizontal(8),
-        $box.padding.vertical(4),
-        $box.borderRadius(8),
-        $box.color(AppColors.primary.withOpacity(0.1)),
-        $text.style.color(AppColors.primary),
-        $text.style.fontWeight(FontWeight.w600),
-        $text.style.fontSize(12),
-      );
-
-  static Style get badgeSuccess => Style(
-        $box.padding.horizontal(8),
-        $box.padding.vertical(4),
-        $box.borderRadius(8),
-        $box.color(AppColors.success.withOpacity(0.1)),
-        $text.style.color(AppColors.success),
-        $text.style.fontWeight(FontWeight.w600),
-        $text.style.fontSize(12),
-      );
-
-  static Style get badgeError => Style(
-        $box.padding.horizontal(8),
-        $box.padding.vertical(4),
-        $box.borderRadius(8),
-        $box.color(AppColors.error.withOpacity(0.1)),
-        $text.style.color(AppColors.error),
-        $text.style.fontWeight(FontWeight.w600),
-        $text.style.fontSize(12),
-      );
-
-  // Композиция стилей (пример)
-  static Style get primaryButtonLarge => primaryButton.add(
-        Style(
-          $box.padding(20, 32),
-          $text.style.fontSize(16),
-        ),
-      );
-
-  static Style get primaryButtonSmall => primaryButton.add(
-        Style(
-          $box.padding(12, 16),
-          $text.style.fontSize(12),
-        ),
       );
 }

@@ -1,3 +1,4 @@
-export 'splash_view.dart';
-export 'splash_viewmodel.dart';
-
+export 'splash_page.dart';
+export 'bloc/splash_bloc.dart';
+export 'bloc/splash_event.dart';
+export 'bloc/splash_state.dart';

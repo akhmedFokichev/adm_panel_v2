@@ -1,29 +1,41 @@
-/// Универсальный ответ от API
+/// Обертка для ответов API
 class ApiResponse<T> {
   final T? data;
   final String? message;
-  final int statusCode;
+  final bool success;
+  /// HTTP статус (при успехе и при ошибке с ответом сервера).
+  final int? statusCode;
+  /// Код/тип ошибки из тела ответа (например поле `error` в JSON).
+  final String? errorCode;
 
   ApiResponse({
     this.data,
     this.message,
-    this.statusCode = -1, // Добавлено значение по умолчанию
+    required this.success,
+    this.statusCode,
+    this.errorCode,
   });
 
-  /// Создать успешный ответ
-  factory ApiResponse.success(T data, {String? message, int statusCode = 200}) {
+  /// Успешный ответ
+  factory ApiResponse.success(T data, [int? statusCode]) {
     return ApiResponse<T>(
       data: data,
-      message: message,
+      success: true,
       statusCode: statusCode,
     );
   }
 
-  /// Создать ответ с ошибкой
-  factory ApiResponse.error(String message, int statusCode) {
+  /// Ответ с ошибкой (HTTP и/или бизнес-ошибка API)
+  factory ApiResponse.error(
+    String message, [
+    int? statusCode,
+    String? errorCode,
+  ]) {
     return ApiResponse<T>(
       message: message,
+      success: false,
       statusCode: statusCode,
+      errorCode: errorCode,
     );
   }
 }

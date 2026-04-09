@@ -1,17 +1,13 @@
 import 'package:dio/dio.dart';
 
-/// Интерцептор для добавления токена авторизации в заголовки запросов
+/// Интерцептор для добавления токена авторизации в заголовки
 class AuthInterceptor extends Interceptor {
   String? _token;
 
-  /// Установить токен авторизации
-  void setToken(String token) {
-    _token = token;
-  }
+  AuthInterceptor({String? token}) : _token = token;
 
-  /// Очистить токен авторизации
-  void clearToken() {
-    _token = null;
+  void updateToken(String? token) {
+    _token = token;
   }
 
   @override
@@ -20,14 +16,5 @@ class AuthInterceptor extends Interceptor {
       options.headers['Authorization'] = 'Bearer $_token';
     }
     handler.next(options);
-  }
-
-  @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
-    // Если получили 401, возможно токен истек
-    if (err.response?.statusCode == 401) {
-      _token = null;
-    }
-    handler.next(err);
   }
 }
