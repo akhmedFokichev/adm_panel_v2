@@ -1,23 +1,20 @@
 import 'package:equatable/equatable.dart';
-import 'package:adm_panel_v2/features/user/models/profile_models.dart';
-import 'package:adm_panel_v2/features/user/models/user_models.dart';
+import 'package:adm_panel_v2/data/user/models/user_models.dart';
 
-class AdminUserState extends Equatable {
+class UsersPageState extends Equatable {
   final bool isLoading;
   final String? error;
   final String? successMessage;
   final UserModel? createdUser;
-  final UserProfileModel? profile;
 
-  const AdminUserState({
+  const UsersPageState({
     this.isLoading = false,
     this.error,
     this.successMessage,
     this.createdUser,
-    this.profile,
   });
 
-  AdminUserState copyWith({
+  UsersPageState copyWith({
     bool? isLoading,
     String? error,
     bool clearError = false,
@@ -25,17 +22,12 @@ class AdminUserState extends Equatable {
     bool clearSuccess = false,
     UserModel? createdUser,
     bool clearCreatedUser = false,
-    UserProfileModel? profile,
-    bool clearProfile = false,
   }) {
-    return AdminUserState(
+    return UsersPageState(
       isLoading: isLoading ?? this.isLoading,
       error: clearError ? null : (error ?? this.error),
-      successMessage:
-          clearSuccess ? null : (successMessage ?? this.successMessage),
-      createdUser:
-          clearCreatedUser ? null : (createdUser ?? this.createdUser),
-      profile: clearProfile ? null : (profile ?? this.profile),
+      successMessage: clearSuccess ? null : (successMessage ?? this.successMessage),
+      createdUser: clearCreatedUser ? null : (createdUser ?? this.createdUser),
     );
   }
 
@@ -45,6 +37,5 @@ class AdminUserState extends Equatable {
         error,
         successMessage,
         createdUser,
-        profile,
       ];
 }

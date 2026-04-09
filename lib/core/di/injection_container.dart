@@ -2,7 +2,7 @@ import 'package:adm_panel_v2/core/network/api_client.dart';
 import 'package:adm_panel_v2/core/config/api_config.dart';
 import 'package:adm_panel_v2/core/storage/app_storage_service.dart';
 import 'package:adm_panel_v2/features/auth/services/auth_service.dart';
-import 'package:adm_panel_v2/features/user/services/user_service.dart';
+import 'package:adm_panel_v2/data/user/services/user_service.dart';
 
 /// Контейнер зависимостей (Dependency Injection)
 class InjectionContainer {

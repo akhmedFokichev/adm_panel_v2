@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:adm_panel_v2/design/app_colors.dart';
 
 enum AppTextStyle {
+  h1,
+  h2,
+  h3,
+  h4,
+  bodyLarge,
+  body,
+  bodySmall,
+  caption,
   sidebarLogo,
   sidebarItem,
   topTitle,
@@ -17,6 +25,58 @@ enum AppTextStyle {
 extension AppTextStyleX on AppTextStyle {
   TextStyle get value {
     switch (this) {
+      case AppTextStyle.h1:
+        return const TextStyle(
+          fontSize: 32,
+          fontWeight: FontWeight.w700,
+          color: AppColors.textPrimary,
+          letterSpacing: -0.8,
+        );
+      case AppTextStyle.h2:
+        return const TextStyle(
+          fontSize: 28,
+          fontWeight: FontWeight.w600,
+          color: AppColors.textPrimary,
+          letterSpacing: -0.5,
+        );
+      case AppTextStyle.h3:
+        return const TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
+          color: AppColors.textPrimary,
+          letterSpacing: -0.4,
+        );
+      case AppTextStyle.h4:
+        return const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: AppColors.textPrimary,
+          letterSpacing: -0.2,
+        );
+      case AppTextStyle.bodyLarge:
+        return const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+          color: AppColors.textPrimaryMuted,
+        );
+      case AppTextStyle.body:
+        return const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: AppColors.textPrimaryMuted,
+        );
+      case AppTextStyle.bodySmall:
+        return const TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w400,
+          color: AppColors.textSecondary,
+        );
+      case AppTextStyle.caption:
+        return const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+          color: AppColors.textTertiary,
+        );
       case AppTextStyle.sidebarLogo:
         return const TextStyle(
           color: AppColors.textOnPrimary,

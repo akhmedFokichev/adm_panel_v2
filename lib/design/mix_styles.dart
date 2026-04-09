@@ -35,6 +35,35 @@ class MixStyles {
         $text.style.fontSize(14),
       );
 
+  /// Компактные кнопки (диалоги, плотные тулбары)
+  static Style get primaryButtonCompact => Style(
+        $box.padding(10, 16),
+        $box.borderRadius(8),
+        $box.color(AppColors.primary),
+        $text.style.color(AppColors.textOnPrimary),
+        $text.style.fontWeight(FontWeight.w600),
+        $text.style.fontSize(14),
+      );
+
+  static Style get outlinedButtonCompact => Style(
+        $box.padding(10, 16),
+        $box.borderRadius(8),
+        $box.border(
+          color: AppColors.primary,
+          width: 1.5,
+        ),
+        $text.style.color(AppColors.primary),
+        $text.style.fontWeight(FontWeight.w600),
+        $text.style.fontSize(14),
+      );
+
+  static Style get textButtonCompact => Style(
+        $box.padding(8, 10),
+        $text.style.color(AppColors.primary),
+        $text.style.fontWeight(FontWeight.w500),
+        $text.style.fontSize(14),
+      );
+
   // Карточки
   static Style get card => Style(
         $box.padding(20),

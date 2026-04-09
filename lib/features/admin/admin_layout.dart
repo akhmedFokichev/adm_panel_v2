@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:adm_panel_v2/design/app_colors.dart';
 import 'package:adm_panel_v2/design/app_text_style.dart';
-import 'package:adm_panel_v2/features/admin/pages/admin_home_page.dart';
-import 'package:adm_panel_v2/features/admin/pages/admin_profile_page.dart';
-import 'package:adm_panel_v2/features/admin/pages/admin_users_page.dart';
+import 'package:adm_panel_v2/features/admin/pages/admin_dashboard_page.dart';
+import 'package:adm_panel_v2/features/admin/pages/design_system/admin_design_system_page.dart';
+import 'package:adm_panel_v2/features/admin/pages/profile/admin_profile_page.dart';
+import 'package:adm_panel_v2/features/admin/pages/users/admin_users_page.dart';
 import 'package:adm_panel_v2/features/admin/bloc/admin.dart';
 
 /// Базовый layout админ-панели: sidebar + topbar + bottombar + контент.
@@ -74,6 +75,11 @@ class AdminLayout extends StatelessWidget {
                       icon: Icons.add_box_outlined,
                       section: AdminSection.addCases,
                     ),
+                    _SidebarItem(
+                      title: 'Дизайн-система',
+                      icon: Icons.palette_outlined,
+                      section: AdminSection.designSystem,
+                    ),
                   ],
                 ),
               ),
@@ -93,7 +99,8 @@ class AdminLayout extends StatelessWidget {
                             style: AppTextStyle.topTitle.value,
                           ),
                           const Spacer(),
-                          const Icon(Icons.person_outline, size: 18, color: AppColors.textSecondary),
+                          const Icon(Icons.person_outline,
+                              size: 18, color: AppColors.textSecondary),
                           const SizedBox(width: 6),
                           Text(
                             'Admin',
@@ -136,7 +143,9 @@ class AdminLayout extends StatelessWidget {
   Widget _contentBySection(AdminSection section) {
     switch (section) {
       case AdminSection.home:
-        return const AdminHomePage();
+        return const AdminDashboardPage();
+      case AdminSection.designSystem:
+        return const AdminDesignSystemPage();
       case AdminSection.users:
         return const AdminUsersPage();
       case AdminSection.profile:
@@ -177,8 +186,11 @@ class _SidebarItem extends StatelessWidget {
           child: Container(
             height: 46,
             decoration: BoxDecoration(
-              color: isActive ? AppColors.sidebarItemActive : AppColors.transparent,
-              border: const Border(bottom: BorderSide(color: AppColors.sidebarDivider)),
+              color: isActive
+                  ? AppColors.sidebarItemActive
+                  : AppColors.transparent,
+              border: const Border(
+                  bottom: BorderSide(color: AppColors.sidebarDivider)),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(

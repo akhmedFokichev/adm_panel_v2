@@ -3,8 +3,8 @@ import 'package:adm_panel_v2/design/app_colors.dart';
 import 'package:adm_panel_v2/design/app_text_style.dart';
 
 /// Главный экран админ-панели.
-class AdminHomePage extends StatelessWidget {
-  const AdminHomePage({super.key});
+class AdminDashboardPage extends StatelessWidget {
+  const AdminDashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) {

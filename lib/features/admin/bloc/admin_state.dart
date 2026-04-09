@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 enum AdminSection {
   home,
+  designSystem,
   users,
   profile,
   cases,

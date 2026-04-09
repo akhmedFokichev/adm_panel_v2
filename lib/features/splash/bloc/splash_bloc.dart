@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:adm_panel_v2/core/di/injection_container.dart';
 import 'package:adm_panel_v2/core/storage/app_storage_service.dart';
-import 'package:adm_panel_v2/features/user/services/user_service.dart';
+import 'package:adm_panel_v2/data/user/services/user_service.dart';
 import 'package:adm_panel_v2/features/splash/bloc/splash_event.dart';
 import 'package:adm_panel_v2/features/splash/bloc/splash_state.dart';
 

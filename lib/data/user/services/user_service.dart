@@ -1,8 +1,8 @@
 import 'package:adm_panel_v2/core/config/api_config.dart';
 import 'package:adm_panel_v2/core/network/api_response.dart';
 import 'package:adm_panel_v2/core/network/api_service.dart';
-import 'package:adm_panel_v2/features/user/models/profile_models.dart';
-import 'package:adm_panel_v2/features/user/models/user_models.dart';
+import 'package:adm_panel_v2/data/user/models/profile_models.dart';
+import 'package:adm_panel_v2/data/user/models/user_models.dart';
 
 class MeResponse {
   final bool authorized;

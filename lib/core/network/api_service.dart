@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:adm_panel_v2/core/network/api_client.dart';
+import 'package:adm_panel_v2/core/network/api_error_parser.dart';
 import 'package:adm_panel_v2/core/network/api_response.dart';
 
 /// Базовый сервис для работы с API
@@ -8,14 +9,29 @@ abstract class ApiService {
 
   ApiService(this.apiClient);
 
-  String _resolveDioMessage(DioException e) {
-    if (e.error != null) {
-      return e.error.toString();
+  bool _isSuccess(int? statusCode) {
+    return statusCode != null && statusCode >= 200 && statusCode < 300;
+  }
+
+  ApiResponse<T> _failureFromResponse<T>(Response<dynamic> response) {
+    final details = ApiErrorParser.fromResponse(response);
+    return ApiResponse.error(
+      details.message,
+      details.statusCode,
+      details.errorCode,
+    );
+  }
+
+  ApiResponse<T> _failureFromDio<T>(DioException e) {
+    if (e.response != null) {
+      return _failureFromResponse<T>(e.response!);
     }
-    if (e.message != null && e.message!.isNotEmpty) {
-      return e.message!;
-    }
-    return 'Ошибка сети';
+    final details = ApiErrorParser.fromDioException(e);
+    return ApiResponse.error(
+      details.message,
+      details.statusCode,
+      details.errorCode,
+    );
   }
 
   /// Обработка GET запроса
@@ -30,21 +46,14 @@ abstract class ApiService {
         queryParameters: queryParameters,
       );
 
-      if (response.statusCode == 200) {
+      if (_isSuccess(response.statusCode)) {
         final data =
             fromJson != null ? fromJson(response.data) : response.data as T;
         return ApiResponse.success(data, response.statusCode);
-      } else {
-        return ApiResponse.error(
-          'Ошибка запроса: ${response.statusCode}',
-          response.statusCode,
-        );
       }
+      return _failureFromResponse<T>(response);
     } on DioException catch (e) {
-      return ApiResponse.error(
-        _resolveDioMessage(e),
-        e.response?.statusCode,
-      );
+      return _failureFromDio<T>(e);
     } catch (e) {
       return ApiResponse.error('Неизвестная ошибка: ${e.toString()}');
     }
@@ -64,23 +73,14 @@ abstract class ApiService {
         queryParameters: queryParameters,
       );
 
-      if (response.statusCode != null &&
-          response.statusCode! >= 200 &&
-          response.statusCode! < 300) {
+      if (_isSuccess(response.statusCode)) {
         final responseData =
             fromJson != null ? fromJson(response.data) : response.data as T;
         return ApiResponse.success(responseData, response.statusCode);
-      } else {
-        return ApiResponse.error(
-          'Ошибка запроса: ${response.statusCode}',
-          response.statusCode,
-        );
       }
+      return _failureFromResponse<T>(response);
     } on DioException catch (e) {
-      return ApiResponse.error(
-        _resolveDioMessage(e),
-        e.response?.statusCode,
-      );
+      return _failureFromDio<T>(e);
     } catch (e) {
       return ApiResponse.error('Неизвестная ошибка: ${e.toString()}');
     }
@@ -100,23 +100,41 @@ abstract class ApiService {
         queryParameters: queryParameters,
       );
 
-      if (response.statusCode != null &&
-          response.statusCode! >= 200 &&
-          response.statusCode! < 300) {
+      if (_isSuccess(response.statusCode)) {
         final responseData =
             fromJson != null ? fromJson(response.data) : response.data as T;
         return ApiResponse.success(responseData, response.statusCode);
-      } else {
-        return ApiResponse.error(
-          'Ошибка запроса: ${response.statusCode}',
-          response.statusCode,
-        );
       }
+      return _failureFromResponse<T>(response);
     } on DioException catch (e) {
-      return ApiResponse.error(
-        _resolveDioMessage(e),
-        e.response?.statusCode,
+      return _failureFromDio<T>(e);
+    } catch (e) {
+      return ApiResponse.error('Неизвестная ошибка: ${e.toString()}');
+    }
+  }
+
+  /// Обработка PATCH запроса
+  Future<ApiResponse<T>> patch<T>(
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+    T Function(dynamic)? fromJson,
+  }) async {
+    try {
+      final response = await apiClient.patch(
+        path,
+        data: data,
+        queryParameters: queryParameters,
       );
+
+      if (_isSuccess(response.statusCode)) {
+        final responseData =
+            fromJson != null ? fromJson(response.data) : response.data as T;
+        return ApiResponse.success(responseData, response.statusCode);
+      }
+      return _failureFromResponse<T>(response);
+    } on DioException catch (e) {
+      return _failureFromDio<T>(e);
     } catch (e) {
       return ApiResponse.error('Неизвестная ошибка: ${e.toString()}');
     }
@@ -135,21 +153,12 @@ abstract class ApiService {
         queryParameters: queryParameters,
       );
 
-      if (response.statusCode != null &&
-          response.statusCode! >= 200 &&
-          response.statusCode! < 300) {
+      if (_isSuccess(response.statusCode)) {
         return ApiResponse.success(null as T, response.statusCode);
-      } else {
-        return ApiResponse.error(
-          'Ошибка запроса: ${response.statusCode}',
-          response.statusCode,
-        );
       }
+      return _failureFromResponse<T>(response);
     } on DioException catch (e) {
-      return ApiResponse.error(
-        _resolveDioMessage(e),
-        e.response?.statusCode,
-      );
+      return _failureFromDio<T>(e);
     } catch (e) {
       return ApiResponse.error('Неизвестная ошибка: ${e.toString()}');
     }

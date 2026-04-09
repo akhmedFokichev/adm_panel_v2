@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mix/mix.dart';
 import 'package:adm_panel_v2/features/auth/bloc/auth_bloc.dart';
 import 'package:adm_panel_v2/features/auth/bloc/auth_state.dart';
-import 'package:adm_panel_v2/design/mix_styles.dart';
+import 'package:adm_panel_v2/design/app_button.dart';
 import 'package:adm_panel_v2/design/app_colors.dart';
+import 'package:adm_panel_v2/design/mix_styles.dart';
 
 /// Форма авторизации
 class AuthForm extends StatelessWidget {
@@ -44,7 +45,17 @@ class AuthForm extends StatelessWidget {
             onSubmitted: () => onLogin(context),
           ),
           const SizedBox(height: 24),
-          _LoginButton(onLogin: () => onLogin(context)),
+          BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              final isLoading = state is AuthLoading;
+              return AppButton(
+                label: 'Войти',
+                onPressed: () => onLogin(context),
+                isLoading: isLoading,
+                size: AppButtonSize.expanded,
+              );
+            },
+          ),
           const SizedBox(height: 16),
           _AuthHint(),
         ],
@@ -148,55 +159,6 @@ class _PasswordField extends StatelessWidget {
       },
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) => onSubmitted(),
-    );
-  }
-}
-
-/// Кнопка входа
-class _LoginButton extends StatelessWidget {
-  final VoidCallback onLogin;
-
-  const _LoginButton({required this.onLogin});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, state) {
-        final isLoading = state is AuthLoading;
-
-        Widget button = Box(
-          style: MixStyles.primaryButton,
-          child: isLoading
-              ? const SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      AppColors.textOnPrimary,
-                    ),
-                  ),
-                )
-              : Center(
-                  child: StyledText(
-                    'Войти',
-                    style: MixStyles.primaryButton,
-                  ),
-                ),
-        );
-
-        if (isLoading) {
-          button = Opacity(
-            opacity: 0.6,
-            child: button,
-          );
-        }
-
-        return Pressable(
-          onPress: isLoading ? null : onLogin,
-          child: button,
-        );
-      },
     );
   }
 }
