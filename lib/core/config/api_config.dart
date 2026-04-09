@@ -8,6 +8,7 @@ class ApiConfig {
   // Endpoints
   static const String login = '/user/login';
   static const String createUser = '/user';
+  static const String users = '/user/list';
   static const String me = '/me';
 
   // Timeouts

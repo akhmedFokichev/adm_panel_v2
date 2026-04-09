@@ -11,8 +11,34 @@ class UsersPageBloc extends Bloc<UsersPageEvent, UsersPageState> {
   UsersPageBloc({UserService? userService})
       : _userService = userService ?? InjectionContainer().userService,
         super(const UsersPageState()) {
+    on<LoadUsersRequested>(_onLoadUsersRequested);
     on<CreateUserRequested>(_onCreateUserRequested);
     on<DeleteUserRequested>(_onDeleteUserRequested);
+  }
+
+  Future<void> _onLoadUsersRequested(
+    LoadUsersRequested event,
+    Emitter<UsersPageState> emit,
+  ) async {
+    emit(state.copyWith(isLoading: true, clearError: true));
+
+    final response = await _userService.getUsers();
+    if (response.success && response.data != null) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          users: response.data!,
+        ),
+      );
+      return;
+    }
+
+    emit(
+      state.copyWith(
+        isLoading: false,
+        error: response.message ?? 'Не удалось загрузить пользователей',
+      ),
+    );
   }
 
   Future<void> _onCreateUserRequested(
@@ -34,6 +60,7 @@ class UsersPageBloc extends Bloc<UsersPageEvent, UsersPageState> {
           isLoading: false,
           createdUser: response.data,
           successMessage: 'Пользователь создан',
+          users: [response.data!, ...state.users.where((u) => u.id != response.data!.id)],
         ),
       );
       return;
@@ -60,6 +87,7 @@ class UsersPageBloc extends Bloc<UsersPageEvent, UsersPageState> {
           isLoading: false,
           successMessage: 'Пользователь удален',
           clearCreatedUser: true,
+          users: state.users.where((u) => u.id != event.userId).toList(),
         ),
       );
       return;

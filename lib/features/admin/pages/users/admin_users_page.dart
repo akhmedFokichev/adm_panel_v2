@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:adm_panel_v2/features/admin/pages/users/users_widgets.dart';
 import 'package:adm_panel_v2/features/admin/pages/users/bloc/users_page_bloc.dart';
 import 'package:adm_panel_v2/features/admin/pages/users/bloc/users_page_event.dart';
 import 'package:adm_panel_v2/features/admin/pages/users/bloc/users_page_state.dart';
-import 'package:adm_panel_v2/data/user/models/user_models.dart';
+import 'package:adm_panel_v2/features/admin/pages/users/widgets/users_card.dart';
+import 'package:adm_panel_v2/features/admin/pages/users/widgets/users_input.dart';
+import 'package:adm_panel_v2/features/admin/pages/users/widgets/users_status_panel.dart';
+import 'package:adm_panel_v2/features/admin/pages/users/widgets/users_table.dart';
 
 class AdminUsersPage extends StatefulWidget {
   const AdminUsersPage({super.key});
@@ -17,7 +19,6 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
   final _loginController = TextEditingController();
   final _passwordController = TextEditingController();
   final _roleController = TextEditingController(text: '10');
-  final List<UserModel> _users = [];
 
   @override
   void dispose() {
@@ -30,16 +31,8 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => UsersPageBloc(),
-      child: BlocConsumer<UsersPageBloc, UsersPageState>(
-        listener: (context, state) {
-          if (state.createdUser != null) {
-            setState(() {
-              _users.removeWhere((item) => item.id == state.createdUser!.id);
-              _users.insert(0, state.createdUser!);
-            });
-          }
-        },
+      create: (_) => UsersPageBloc()..add(const LoadUsersRequested()),
+      child: BlocBuilder<UsersPageBloc, UsersPageState>(
         builder: (context, state) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,12 +95,9 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
                 child: UsersCard(
                   title: 'Таблица пользователей',
                   child: UsersTable(
-                    users: _users,
+                    users: state.users,
                     onDelete: (userId) {
                       context.read<UsersPageBloc>().add(DeleteUserRequested(userId));
-                      setState(() {
-                        _users.removeWhere((item) => item.id == userId);
-                      });
                     },
                   ),
                 ),

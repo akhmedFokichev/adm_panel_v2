@@ -7,6 +7,10 @@ abstract class UsersPageEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class LoadUsersRequested extends UsersPageEvent {
+  const LoadUsersRequested();
+}
+
 class CreateUserRequested extends UsersPageEvent {
   final String login;
   final String password;

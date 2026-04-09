@@ -24,6 +24,31 @@ class MeResponse {
 class UserService extends ApiService {
   UserService(super.apiClient);
 
+  Future<ApiResponse<List<UserModel>>> getUsers() {
+    return get<List<UserModel>>(
+      ApiConfig.users,
+      fromJson: (json) {
+        final dynamic source;
+        if (json is List) {
+          source = json;
+        } else if (json is Map<String, dynamic>) {
+          source = json['items'] ?? const [];
+        } else {
+          source = const [];
+        }
+
+        if (source is! List) {
+          return <UserModel>[];
+        }
+
+        return source
+            .whereType<Map<String, dynamic>>()
+            .map(UserModel.fromJson)
+            .toList();
+      },
+    );
+  }
+
   Future<ApiResponse<UserModel>> createUser(CreateUserRequest request) {
     return post<UserModel>(
       ApiConfig.createUser,

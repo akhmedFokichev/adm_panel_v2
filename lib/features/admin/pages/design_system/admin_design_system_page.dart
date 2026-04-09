@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:adm_panel_v2/design/app_alert_dialog.dart';
 import 'package:adm_panel_v2/design/app_button.dart';
 import 'package:adm_panel_v2/design/app_colors.dart';
+import 'package:adm_panel_v2/design/app_data_table.dart';
 import 'package:adm_panel_v2/design/app_switch.dart';
 import 'package:adm_panel_v2/design/app_tab_switch.dart';
 import 'package:adm_panel_v2/design/app_text_style.dart';
@@ -115,8 +116,44 @@ class AdminDesignSystemPage extends StatelessWidget {
                         label: 'Loading',
                         isLoading: true,
                       ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          _SectionCard(
+            title: 'Диалоги',
+            child: SizedBox(
+              width: 420,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const _CodeClassName('AppAlertDialog'),
+                  const SizedBox(height: 10),
+                  Text(
+                    'AppAlertDialog.showMessage<T>(context, …)',
+                    style: TextStyle(
+                      fontFamily: 'monospace',
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 10,
+                    runSpacing: 10,
+                    children: [
                       AppButton(
-                        label: 'Показать Alert',
+                        label: 'Два действия (bool)',
+                        size: AppButtonSize.compact,
+                        onPressed: () => _showConfirmDialogExample(context),
+                      ),
+                      AppButton(
+                        label: 'Одинокая кнопка',
+                        variant: AppButtonVariant.outlined,
+                        size: AppButtonSize.compact,
                         onPressed: () => _showPreviewDialog(context),
                       ),
                     ],
@@ -164,6 +201,11 @@ class AdminDesignSystemPage extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           const _SectionCard(
+            title: 'Таблицы',
+            child: _TablesDemo(),
+          ),
+          const SizedBox(height: 16),
+          const _SectionCard(
             title: 'Switch / TabSwitch',
             child: _SwitchesDemo(),
           ),
@@ -181,6 +223,33 @@ class AdminDesignSystemPage extends StatelessWidget {
       primaryLabel: 'OK',
       showCloseButton: true,
       barrierDismissible: true,
+    );
+  }
+
+  Future<void> _showConfirmDialogExample(BuildContext context) async {
+    final agreed = await AppAlertDialog.showMessage<bool>(
+      context,
+      title: 'Пример подтверждения',
+      message: 'Диалог возвращает значение с типом T (здесь bool).',
+      variant: AppAlertDialogVariant.info,
+      primaryLabel: 'Да',
+      secondaryLabel: 'Нет',
+      primaryResult: true,
+      secondaryResult: false,
+      showCloseButton: true,
+      barrierDismissible: true,
+    );
+    if (!context.mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          agreed == null
+              ? 'Закрыто без выбора'
+              : agreed
+                  ? 'Выбрано: Да (true)'
+                  : 'Выбрано: Нет (false)',
+        ),
+      ),
     );
   }
 }
@@ -312,35 +381,84 @@ class _PaletteTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: DataTable(
-        columns: const [
-          DataColumn(label: Text('Token')),
-          DataColumn(label: Text('Preview')),
-          DataColumn(label: Text('Hex')),
-        ],
-        rows: _tokens
-            .map(
-              (item) => DataRow(
-                cells: [
-                  DataCell(Text(item.token)),
-                  DataCell(
-                    Container(
-                      width: 56,
-                      height: 24,
-                      decoration: BoxDecoration(
-                        color: item.color,
-                        border: Border.all(color: AppColors.border),
-                        borderRadius: BorderRadius.circular(6),
+    return AppDataTable.themed(
+      context: context,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: DataTable(
+          border: AppDataTable.border,
+          columns: const [
+            DataColumn(label: Text('Token')),
+            DataColumn(label: Text('Preview')),
+            DataColumn(label: Text('Hex')),
+          ],
+          rows: _tokens
+              .map(
+                (item) => DataRow(
+                  cells: [
+                    DataCell(Text(item.token)),
+                    DataCell(
+                      Container(
+                        width: 56,
+                        height: 24,
+                        decoration: BoxDecoration(
+                          color: item.color,
+                          border: Border.all(color: AppColors.border),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
                       ),
                     ),
+                    DataCell(Text(_hex(item.color))),
+                  ],
+                ),
+              )
+              .toList(),
+        ),
+      ),
+    );
+  }
+}
+
+class _TablesDemo extends StatelessWidget {
+  const _TablesDemo();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 480,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const _CodeClassName('AppDataTable'),
+          const SizedBox(height: 10),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: AppDataTable.themed(
+              context: context,
+              child: DataTable(
+                border: AppDataTable.border,
+                columns: const [
+                  DataColumn(label: Text('Колонка')),
+                  DataColumn(label: Text('Значение')),
+                ],
+                rows: const [
+                  DataRow(
+                    cells: [
+                      DataCell(Text('Стиль')),
+                      DataCell(Text('AppDataTable.themed + AppDataTable.border')),
+                    ],
                   ),
-                  DataCell(Text(_hex(item.color))),
+                  DataRow(
+                    cells: [
+                      DataCell(Text('Шапка')),
+                      DataCell(Text('surfaceVariant + линии сетки')),
+                    ],
+                  ),
                 ],
               ),
-            )
-            .toList(),
+            ),
+          ),
+        ],
       ),
     );
   }
