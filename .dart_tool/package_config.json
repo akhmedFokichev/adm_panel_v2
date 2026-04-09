@@ -344,11 +344,7 @@
       "languageVersion": "3.6"
     }
   ],
-<<<<<<< HEAD
   "generated": "2026-04-09T15:11:19.046727Z",
-=======
-  "generated": "2026-04-09T10:17:28.023526Z",
->>>>>>> main
   "generator": "pub",
   "generatorVersion": "3.6.1",
   "flutterRoot": "file:///Users/azapsh/development/flutter",
